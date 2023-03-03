@@ -1,0 +1,38 @@
+#r "SendGrid"
+using System;
+using SendGrid.Helpers.Mail;
+
+// Function triggered when there is new input in the Storage container
+
+/*
+The parameters are linked with the azure storage account and its container. 
+The binding for both Blobtrigger and SendGrid Object is defined in function.json
+
+Parameters:
+myBlob: Blob Storage
+name: Name of the file incoming in path "inputsource/{name}"
+message: SendGrid Object name from function.json
+// Sender and receiver can be configured via Azure SendGrid UI or from Function.json
+*/
+public static void Run(Stream myBlob,string name, ILogger log, out SendGridMessage message)
+{
+		// Creating SendGrid Object to Send Email upon trigger
+
+            message = new SendGridMessage();
+            
+		// Email Msg Body
+            message.PlainTextContent= "File has been updated/added to the blob : "+name ;
+            
+		// Converting Blob Stream to Byte
+            byte[] result;
+            using (var ms = new MemoryStream())
+            {
+                myBlob.CopyTo(ms);
+                result = ms.ToArray();
+            }
+            var blobBytes = result;
+            
+		// Adding attachment to email
+            message.AddAttachment(name, Convert.ToBase64String(blobBytes), "application/pdf", "attachment");
+}
+    

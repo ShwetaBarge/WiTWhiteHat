@@ -1,0 +1,20 @@
+{
+  "bindings": [
+    {
+      "name": "myBlob",
+      "type": "blobTrigger",
+      "direction": "in",
+      "path": "inputsource/{name}",
+      "connection": "rgemailwhitehatsa167_STORAGE"
+    },
+    {
+      "name": "message",
+      "direction": "out",
+      "type": "sendGrid",
+      "apiKey": "SENDGRID_API_KEY",
+      "to": "bargeshweta983@gmail.com",
+      "from": "bargeshweta983@gmail.com",
+      "subject": "WhiteHats Blob Trigger"
+    }
+  ]
+}
